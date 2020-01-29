@@ -1,0 +1,225 @@
+
+#tAREA 2
+#abrir librerias
+library(igraph)
+
+#Crear red figura 1 con sus respectivas conexiones
+figura1<-make_empty_graph(n=10, directed = FALSE)
+figura1<- add.edges(figura1, c(1,2, 1,3, 1,4, 1,5, 1,6, 1,7, 1,8, 1,9, 1,10))
+
+#Nombrar los nodos y mostrar la figura
+V(figura1)$name <- LETTERS [1:10]
+plot(figura1)
+
+
+#Crear red figura 2
+figura2<-make_ring(n=10, directed = FALSE)
+
+#Nombrar los nodos
+V(figura2)$name <- LETTERS [1:10]
+plot(figura2)
+
+
+#Crear red figura 3
+figura3<-make_empty_graph(n=10, directed = FALSE)
+figura3<- add.edges(figura3, c(1,2, 1,4, 1,8, 1,9, 1,10, 2,6, 2,9, 2,10, 3,5, 3,8, 3,7, 4,9, 4,6, 4,5, 4,8, 4,7, 5,6, 5,7, 5,8, 6,8, 7,9, 7,10, 8,9, 9,10, 2,7))
+
+#Nombrar los nodos
+V(figura3)$name <- LETTERS [1:10]
+plot(figura3)
+
+#Crear red figura 4
+figura4<-make_empty_graph(n=10, directed = FALSE)
+figura4<- add.edges(figura4, c(1,2, 1,5, 1,6, 1,8, 2,9, 3,4, 5,7, 5,10, 1,3)) 
+
+#Nombrar los nodos
+V(figura4)$name <- LETTERS [1:10]
+plot(figura4)
+
+
+#Calcula con igraph:
+
+#a) Vecinos figura 1
+#Llegue solo hasta el vecino 5 para no poner 10 veces lo mismo, 
+#pero así se calculan para cada uno.
+
+vecinos1 <- neighbors(figura1, 1)
+vecinos1
+#El vecino 1 tiene más conexiones 9 de 10 conexiones 
+
+vecinos2 <- neighbors(figura1, 2)
+vecinos2
+vecinos3 <- neighbors(figura1, 3)
+vecinos3
+vecinos4 <- neighbors(figura1, 4)
+vecinos4
+vecinos5 <- neighbors(figura1, 5)
+vecinos5
+
+#a) Vecinos figura 2
+vecinos11 <- neighbors(figura2, 1)
+vecinos11
+vecinos22 <- neighbors(figura2, 2)
+vecinos22
+vecinos33 <- neighbors(figura2, 3)
+vecinos33
+vecinos44 <- neighbors(figura2, 4)
+vecinos44
+vecinos55 <- neighbors(figura2, 5)
+vecinos55
+
+#a) Vecinos figura 3
+vecinos <- neighbors(figura3, 1)
+vecinos
+vecinosa <- neighbors(figura3, 2)
+vecinosa
+vecinosb <- neighbors(figura3, 3)
+vecinosb
+vecinosc <- neighbors(figura3, 4)
+vecinosc
+vecinosd <- neighbors(figura3, 5)
+vecinosd
+
+#a) Vecinos figura 4
+vecino <- neighbors(figura4, 6)
+vecino
+vecinoss <- neighbors(figura4, 7)
+vecinoss
+vecinosg <- neighbors(figura4, 8)
+vecinosg
+vecinosf<- neighbors(figura4, 9)
+vecinosf
+vecinosh <- neighbors(figura4, 10)
+vecinosh
+
+
+
+
+#Conocer degree
+degree(figura1)
+degree(figura2)
+degree(figura3)
+degree(figura4)
+
+#b) Calcular distribucion de conectividades
+degree.distribution(figura1)
+plot(degree_distribution(figura1))
+
+degree.distribution(figura2)
+plot(degree_distribution(figura2))
+
+degree.distribution(figura3)
+plot(degree_distribution(figura3))
+
+degree.distribution(figura4)
+plot(degree_distribution(figura4))
+
+
+#c) El nodo mas conectado.
+which(degree(figura1)==max(degree(figura1)))
+
+which(degree(figura2)==max(degree(figura2)))
+#En la figura 2 Nos dice que todos son los más conectados, 
+#porque tienen el mismo numero de conexiones
+
+which(degree(figura3)==max(degree(figura3)))
+
+which(degree(figura4)==max(degree(figura4)))
+
+#d) Calcular diametro, los nodos más lejanos
+diameter(figura1)
+diameter(figura2)
+diameter(figura3)
+diameter(figura4)
+#LA figura 2 tiene el diametro más grande
+
+#e) La matriz de distancias y el heatmap asociado.
+distancia<-shortest.paths(figura1)
+distancia
+
+distancia2<-shortest.paths(figura2)
+distancia2
+
+distancia3<-shortest.paths(figura3)
+distancia3
+
+distancia4<-shortest.paths(figura4)
+distancia4
+
+#matriz
+matriz1<-distances(figura1)
+matriz1
+
+matriz2<-distances(figura2)
+matriz2
+
+#matriz
+matriz3<-distances(figura3)
+matriz3
+
+matriz4<-distances(figura4)
+matriz4
+
+#debes saber que clase es para poder hacer un heatmap, debe ser una matriz
+class(distancia)
+#Generar un hetmap para poder observar las más conectadas
+heatmap(distancia)
+heatmap(distancia2)
+heatmap(distancia3)
+heatmap(distancia4)
+
+
+#2. Elabora un programa en R que utilice un ciclo for para a partir del vector
+vectorr <-sample(100)
+vectorr
+# a) Imprima los cuadrados de los numeros impares.
+
+#En este ciclo for se utilizan números del 1 al 100 consecutivos
+# y se calculan los pares, y a los impares se les saca el cuadrado
+for(i in 1:100){if(i %% 2 ==0) {print(i)} else{print(i^2)}}
+
+#En este ciclo for secalculan a partir del vectorr, del cual te dan 100 números aleatorios del 1 al 100
+# se calculan los pares, y a los impares se les saca el cuadrado
+for(i in vectorr){if(i %% 2 ==0) {print(i)} else{print(i^2)}}
+
+#3. Elabora un programa en R que a partir del archivo de amistades del grupo.
+# a) Cargue el archivo
+#Descargar acrhivo en formato csv, que está separado por comas
+RedAmigos<-read.csv("Red_de_Amigas_GF_2020 - Sheet1.csv")
+RedAmigos  
+
+rownames<- RedAmigos[,1]
+
+RedAmigos<-RedAmigos[,-1]
+RedAmigos<-as.matrix(RedAmigos)
+class(RedAmigos)
+red<-graph_from_adjacency_matrix(RedAmigos, mode = "directed")
+plot(red, edge.arrow.size=0.01)
+
+#b) Genere el vector de nombres de todos tus amigos (los tuyos)
+
+MisAmigos <-red
+MisAmigos
+
+head(MisAmigos)
+
+MisAmigos[20, c(6,13,16,18,21)]
+
+#c) Genere el vector de nombres de todos los que se consideren tus amigos.
+MisAmigosM <-red
+MisAmigosM
+
+MisAmigosM[20, c(6,13,16,18,21)]
+
+
+#d) Imprima el texto: "Hola amigo1"
+
+nombres<-c("Karen", "Paulina", "Janeet", "Nataly", "DanielaM")
+HELLO<-c("HOLA AMIGA", "HOLA AMIGUITA", "HOLA AMIGUIRRI", "HOLA amigaa", "HELLO word")
+
+names(nombres)<-HELLO
+nombres[1]
+nombres[2]
+nombres[3]
+nombres[4]
+nombres[5]
